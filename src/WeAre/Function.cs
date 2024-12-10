@@ -24,18 +24,18 @@ public class Function
         foreach( var item in (await client.ScanAsync(tableName, new List<string>(){ "ident", "last" })).Items ){
             var asset = await Asset.FetchAsync(item["ident"].S);
 
-            if( item.TryGetValue("last", out AttributeValue val) && val.N == asset.Package.Version.Id.ToString() ){
-                Console.WriteLine($"No new version for {asset.Package.Title}");
+            if( item.TryGetValue("last", out AttributeValue val) && val.N == asset.Version.Id.ToString() ){
+                Console.WriteLine($"No new version for {asset.Title}");
             } else {
-                Console.WriteLine($"New version for {asset.Package.Title}");
-                item["last"] = new AttributeValue(){ N = asset.Package.Version.Id.ToString() };
+                Console.WriteLine($"New version for {asset.Title}");
+                item["last"] = new AttributeValue(){ N = asset.Version.Id.ToString() };
                 await client.PutItemAsync(tableName, item);
 
                 await new WebhookPayload(
-                    asset.Package.Title,
-                    asset.Package.Version.Changes,
-                    $"https://asset.party/{asset.Package.Org.Ident}/{asset.Package.Ident}",
-                    asset.Package.Thumb
+                    asset.Title,
+                    asset.Version.Changes,
+                    $"https://asset.party/{asset.Org.Ident}/{asset.Ident}",
+                    asset.Thumb
                 ).SendAsync(webhook);
             }
         }

@@ -5,13 +5,11 @@ namespace WeAre;
 public class Asset {
     private static readonly string AssetBase = "https://services.facepunch.com/sbox/package/get/";
     
-    public class AssetInfo {
-        public string Ident {get;set;}
-        public string Title {get;set;}
-        public string Thumb {get;set;}
-        public VersionInfo Version {get;set;}
-        public OrgInfo Org {get;set;}
-    }
+    public string Ident {get;set;}
+    public string Title {get;set;}
+    public string Thumb {get;set;}
+    public VersionInfo Version {get;set;}
+    public OrgInfo Org {get;set;}
 
     public class VersionInfo {
         public ulong Id {get;set;}
@@ -24,8 +22,6 @@ public class Asset {
         public string Ident {get;set;}
         public string Title {get;set;}
     }
-
-    public AssetInfo Package {get;set;}
 
     public static async Task<Asset> FetchAsync(string ident){
         var client = new HttpClient();
